@@ -17,7 +17,7 @@
               <mat-form-field appearance="fill">
                 <mat-select
                   [formControlName]="'from'"
-                  (selectionChange)="onFromChange()"
+                  (selectionChange)="getOneToOneConversion()"
                 >
                   <mat-option *ngFor="let symbol of symbols" [value]="symbol">
                     {{ symbol }}
@@ -37,7 +37,7 @@
                   ><mat-option
                     *ngFor="let symbol of symbols"
                     [value]="symbol"
-                    (selectionChange)="onToChange()"
+                    (selectionChange)="getOneToOneConversion()"
                   >
                     {{ symbol }}
                   </mat-option></mat-select

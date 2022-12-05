@@ -55,19 +55,11 @@ export class HomeComponent implements OnInit {
       );
   }
 
-  public onFromChange(): void {
-    this.getOneToOneConversion();
-  }
-
-  public onToChange(): void {
-    this.getOneToOneConversion();
-  }
-
   public get isInValidAmount(): boolean {
     return this.amount <= 0;
   }
 
-  private getOneToOneConversion(): void {
+  public getOneToOneConversion(): void {
     this.apiService
       .getConversion(
         this.currencyForm.get('from')?.value,
