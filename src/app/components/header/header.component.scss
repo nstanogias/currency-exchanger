@@ -1,0 +1,16 @@
+:host {
+  mat-toolbar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  div {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  button {
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+}
