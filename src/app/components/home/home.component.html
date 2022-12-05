@@ -15,7 +15,10 @@
             <div class="col">
               <h4>From</h4>
               <mat-form-field appearance="fill">
-                <mat-select [formControlName]="'from'">
+                <mat-select
+                  [formControlName]="'from'"
+                  (selectionChange)="onFromChange()"
+                >
                   <mat-option *ngFor="let symbol of symbols" [value]="symbol">
                     {{ symbol }}
                   </mat-option>
@@ -31,7 +34,11 @@
               <h4>To</h4>
               <mat-form-field appearance="fill">
                 <mat-select [formControlName]="'to'"
-                  ><mat-option *ngFor="let symbol of symbols" [value]="symbol">
+                  ><mat-option
+                    *ngFor="let symbol of symbols"
+                    [value]="symbol"
+                    (selectionChange)="onToChange()"
+                  >
                     {{ symbol }}
                   </mat-option></mat-select
                 >
