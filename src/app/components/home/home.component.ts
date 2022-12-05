@@ -55,6 +55,10 @@ export class HomeComponent implements OnInit {
       );
   }
 
+  public get isInValidAmount(): boolean {
+    return this.amount <= 0;
+  }
+
   private getOneToOneConversion(): void {
     this.apiService
       .getConversion(

@@ -38,7 +38,12 @@
               </mat-form-field>
             </div>
           </div>
-          <button mat-raised-button color="primary" (click)="convert()">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="convert()"
+            [disabled]="isInValidAmount"
+          >
             convert
           </button>
         </div>
@@ -50,7 +55,9 @@
         <mat-form-field appearance="fill">
           <input matInput type="text" [(ngModel)]="result" disabled />
         </mat-form-field>
-        <button mat-raised-button color="primary">More Details</button>
+        <button mat-raised-button color="primary" [disabled]="isInValidAmount">
+          More Details
+        </button>
       </div>
     </div>
   </div>
