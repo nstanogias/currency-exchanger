@@ -10,7 +10,7 @@ import { ISymbol } from 'src/app/shared/models/symbol';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  public amount = 25;
+  public amount = 0;
   public currToCurr = '';
   public result = '';
   public currencyForm: FormGroup = this.fb.group({
@@ -27,6 +27,35 @@ export class HomeComponent implements OnInit {
       .pipe(take(1))
       .subscribe((val: ISymbol) => (this.symbols = Object.keys(val.symbols)));
 
+    this.getOneToOneConversion();
+  }
+
+  public swap(): void {
+    const temp = this.currencyForm.get('from')?.value;
+    this.currencyForm.setValue({
+      from: this.currencyForm.get('to')?.value,
+      to: temp,
+    });
+    this.getOneToOneConversion();
+  }
+
+  public convert(): void {
+    this.apiService
+      .getConversion(
+        this.currencyForm.get('from')?.value,
+        this.currencyForm.get('to')?.value,
+        this.amount
+      )
+      .pipe(take(1))
+      .subscribe(
+        (val) =>
+          (this.result = `${val.result.toFixed(2).toString()} ${
+            this.currencyForm.get('to')?.value
+          }`)
+      );
+  }
+
+  private getOneToOneConversion(): void {
     this.apiService
       .getConversion(
         this.currencyForm.get('from')?.value,
@@ -39,24 +68,5 @@ export class HomeComponent implements OnInit {
           val.result
         } ${this.currencyForm.get('to')?.value}`;
       });
-  }
-
-  public swap(): void {
-    const temp = this.currencyForm.get('from')?.value;
-    this.currencyForm.setValue({
-      from: this.currencyForm.get('to')?.value,
-      to: temp,
-    });
-  }
-
-  public convert(): void {
-    this.apiService
-      .getConversion(
-        this.currencyForm.get('from')?.value,
-        this.currencyForm.get('to')?.value,
-        this.amount
-      )
-      .pipe(take(1))
-      .subscribe((val) => (this.result = val.result.toFixed(2).toString()));
   }
 }
