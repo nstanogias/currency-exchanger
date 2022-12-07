@@ -16,6 +16,7 @@ import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { DetailsComponent } from './components/details/details.component';
 import { AuthInterceptor } from './shared/auth.interceptor';
+import { PanelComponent } from './components/panel/panel.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AuthInterceptor } from './shared/auth.interceptor';
     HomeComponent,
     HeaderComponent,
     DetailsComponent,
+    PanelComponent,
   ],
   imports: [
     BrowserModule,
