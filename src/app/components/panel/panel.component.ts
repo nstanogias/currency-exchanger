@@ -1,6 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { ApiService } from 'src/app/shared/api.service';
 import { ISymbol } from 'src/app/shared/models/symbol';
 
@@ -9,7 +16,7 @@ import { ISymbol } from 'src/app/shared/models/symbol';
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss'],
 })
-export class PanelComponent implements OnInit {
+export class PanelComponent implements OnInit, OnDestroy {
   @Input() public amount = 0;
   @Input() public from = '';
   @Input() public to = '';
@@ -27,6 +34,9 @@ export class PanelComponent implements OnInit {
   });
 
   public symbols: string[] = [];
+
+  private symbolsSubscription: Subscription;
+
   public constructor(private apiService: ApiService, private fb: FormBuilder) {}
 
   public ngOnInit(): void {
@@ -38,13 +48,19 @@ export class PanelComponent implements OnInit {
       this.currencyForm.controls['from'].disable();
     }
 
-    this.apiService.symbols$.subscribe((val: ISymbol | null) => {
-      if (val) {
-        this.symbols = Object.keys(val.symbols);
+    this.symbolsSubscription = this.apiService.symbols$.subscribe(
+      (val: ISymbol | null) => {
+        if (val) {
+          this.symbols = Object.keys(val.symbols);
+        }
       }
-    });
+    );
 
     this.getOneToOneConversion();
+  }
+
+  public ngOnDestroy(): void {
+    this.symbolsSubscription.unsubscribe();
   }
 
   public emitEvent(): void {
