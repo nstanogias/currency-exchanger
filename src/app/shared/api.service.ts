@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, take } from 'rxjs';
 import { IConversion } from './models/conversion';
 import { ISymbol } from './models/symbol';
 
@@ -8,10 +8,16 @@ import { ISymbol } from './models/symbol';
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private client: HttpClient) {}
+  private symbols$$ = new BehaviorSubject<ISymbol | null>(null);
+  public symbols$: Observable<ISymbol | null> = this.symbols$$.asObservable();
 
-  public getSymbols(): Observable<ISymbol> {
-    return this.client.get<ISymbol>('https://api.apilayer.com/fixer/symbols');
+  public constructor(private client: HttpClient) {}
+
+  public initSymbols(): void {
+    this.client
+      .get<ISymbol>('https://api.apilayer.com/fixer/symbols')
+      .pipe(take(1))
+      .subscribe((val) => this.symbols$$.next(val));
   }
 
   public getConversion(
