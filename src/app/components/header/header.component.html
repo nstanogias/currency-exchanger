@@ -1,7 +1,11 @@
 <mat-toolbar color="primary">
   <span>Converter</span>
   <div>
-    <button mat-button>EUR-USD Details</button>
-    <button mat-button>EUR-GBP Details</button>
+    <button mat-button (click)="navigateToDetails('EUR', 'USD')">
+      EUR-USD Details
+    </button>
+    <button mat-button (click)="navigateToDetails('EUR', 'GBP')">
+      EUR-GBP Details
+    </button>
   </div>
 </mat-toolbar>

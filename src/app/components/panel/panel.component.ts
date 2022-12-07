@@ -2,9 +2,11 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription, take } from 'rxjs';
@@ -16,7 +18,7 @@ import { ISymbol } from 'src/app/shared/models/symbol';
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss'],
 })
-export class PanelComponent implements OnInit, OnDestroy {
+export class PanelComponent implements OnInit, OnDestroy, OnChanges {
   @Input() public amount = 0;
   @Input() public from = '';
   @Input() public to = '';
@@ -56,6 +58,23 @@ export class PanelComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.getOneToOneConversion();
+  }
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes['from']) {
+      this.from = changes['from'].currentValue;
+    }
+    if (changes['to']) {
+      this.to = changes['to'].currentValue;
+    }
+    if (changes['amount']) {
+      this.amount = +changes['amount'].currentValue;
+    }
+    this.currencyForm.setValue({
+      from: this.from,
+      to: this.to,
+    });
     this.getOneToOneConversion();
   }
 

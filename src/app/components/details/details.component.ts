@@ -1,6 +1,5 @@
-import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ApiService } from 'src/app/shared/api.service';
 import { ISymbol } from 'src/app/shared/models/symbol';
@@ -14,7 +13,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   public constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
-    private location: Location
+    private router: Router
   ) {}
 
   public title = '';
@@ -24,9 +23,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
   private symbolsSubscription: Subscription;
 
   public ngOnInit(): void {
-    this.from = this.route.snapshot.params['from'];
-    this.to = this.route.snapshot.params['to'];
-    this.amount = this.route.snapshot.params['amount'];
+    this.route.params.forEach((params) => {
+      this.from = params['from'];
+      this.to = params['to'];
+      this.amount = params['amount'];
+    });
+
     this.symbolsSubscription = this.apiService.symbols$.subscribe(
       (val: ISymbol | null) => {
         if (val) {
@@ -41,6 +43,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   public back(): void {
-    this.location.back();
+    this.router.navigate(['']);
   }
 }
