@@ -1,76 +1,75 @@
 <div class="panel">
-  <div class="row-no-align">
-    <div class="input-container">
-      <h4>Amount</h4>
-      <mat-form-field appearance="fill">
-        <input matInput type="number" [(ngModel)]="amount" />
-      </mat-form-field>
-    </div>
-    <form [formGroup]="currencyForm">
-      <div class="form-container">
-        <div class="row">
-          <div class="col">
-            <h4>From</h4>
-            <mat-form-field appearance="fill">
-              <mat-select
-                [formControlName]="'from'"
-                (selectionChange)="getOneToOneConversion()"
-              >
-                <mat-option *ngFor="let symbol of symbols" [value]="symbol">
-                  {{ symbol }}
-                </mat-option>
-              </mat-select></mat-form-field
-            >
-          </div>
-
-          <button
-            mat-button
-            color="primary"
-            (click)="swap()"
-            [disabled]="isDetails"
-          >
-            <mat-icon>swap_horiz</mat-icon>
-          </button>
-
-          <div class="col">
-            <h4>To</h4>
-            <mat-form-field appearance="fill">
-              <mat-select
-                [formControlName]="'to'"
-                (selectionChange)="getOneToOneConversion()"
-                ><mat-option *ngFor="let symbol of symbols" [value]="symbol">
-                  {{ symbol }}
-                </mat-option></mat-select
-              >
-            </mat-form-field>
-          </div>
-        </div>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="convert()"
-          [disabled]="isInValidAmount"
-        >
-          convert
-        </button>
-      </div>
-    </form>
+  <div class="pair">
+    <h4>Amount:</h4>
+    <mat-form-field appearance="fill">
+      <input matInput type="number" [(ngModel)]="amount" />
+    </mat-form-field>
   </div>
-  <div class="second-row">
-    <div class="mat-f-field">{{ currToCurr }}</div>
-    <div class="row2">
-      <mat-form-field appearance="fill">
-        <input matInput type="text" [(ngModel)]="result" disabled />
-      </mat-form-field>
+  <form [formGroup]="currencyForm">
+    <div class="form-container">
+      <div class="pair">
+        <h4>From:</h4>
+        <mat-form-field appearance="fill">
+          <mat-select
+            [formControlName]="'from'"
+            (selectionChange)="getOneToOneConversion()"
+          >
+            <mat-option *ngFor="let symbol of symbols" [value]="symbol">
+              {{ symbol }}
+            </mat-option>
+          </mat-select></mat-form-field
+        >
+      </div>
+
       <button
-        *ngIf="!isDetails"
+        class="swap-btn"
+        mat-button
+        color="primary"
+        (click)="swap()"
+        [disabled]="isDetails"
+      >
+        <mat-icon>swap_vert</mat-icon>
+      </button>
+
+      <div class="pair to">
+        <h4>To:</h4>
+        <mat-form-field appearance="fill">
+          <mat-select
+            [formControlName]="'to'"
+            (selectionChange)="getOneToOneConversion()"
+            ><mat-option *ngFor="let symbol of symbols" [value]="symbol">
+              {{ symbol }}
+            </mat-option></mat-select
+          >
+        </mat-form-field>
+      </div>
+      <button
         mat-raised-button
         color="primary"
+        (click)="convert()"
         [disabled]="isInValidAmount"
-        (click)="emitEvent()"
       >
-        More Details
+        convert
       </button>
     </div>
-  </div>
+  </form>
+  <div class="one-to-one">{{ currToCurr }}</div>
+  <mat-form-field appearance="fill" class="result">
+    <input
+      matInput
+      placeholder="conversion result"
+      type="text"
+      [(ngModel)]="result"
+      disabled
+    />
+  </mat-form-field>
+  <button
+    *ngIf="!isDetails"
+    mat-raised-button
+    color="primary"
+    [disabled]="isInValidAmount"
+    (click)="emitEvent()"
+  >
+    More Details
+  </button>
 </div>
